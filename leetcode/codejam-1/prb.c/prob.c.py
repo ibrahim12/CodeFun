@@ -82,36 +82,21 @@ for case in xrange(T):
 
     if value == 2:
 
-        max_l = 0
-        max_r = 0
-        for index in xrange(1, n+1):
-            print ''
-            print index
-            if index not in cycle_paths:
-                l = 0
-                l_l = 0
-                l_r = 0
-                fl = 0
-                fr = 0
-                s = bff[index]
-                while s in bff and s != index:
-                    print s
-                    if s == g_start:
-                        l_l = l
+        def find_l(start, c, s, e):
+            print start, c
+            if start not in r_bff:
+                return c
 
-                    if s == g_last and not l_l:
-                        l_r = l
+            t = 0
+            for node in r_bff[start]:
+                if node != s and node != e:
+                    t = max(t, find_l(node, c+1, s, e))
 
-                    if l_l and l_r:
-                        break
+            print 's', start, t
+            return t
 
-                    l += 1
-                    s = bff[s]
-
-                print l_l, l_r
-                max_l = max(max_l, l_l)
-                max_r = max(max_r, l_r)
-
+        max_l = find_l(g_start, 0, g_start, g_last)
+        max_r = find_l(g_last, 0, g_start, g_last)
 
         print value, max_l, max_r
         value += max_l + max_r
